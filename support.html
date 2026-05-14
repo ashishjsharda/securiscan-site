@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support – SecuriScan</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: #30363d;
+      --accent: #238636;
+      --accent-hover: #2ea043;
+      --blue: #1f6feb;
+      --red: #da3633;
+      --yellow: #e3b341;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --radius: 12px;
+    }
+
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* NAV */
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 100; }
+    .nav-brand { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.1rem; color: var(--text); text-decoration: none; }
+    .nav-brand svg { width: 28px; height: 28px; }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-links a { color: var(--muted); font-size: 0.9rem; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1.1rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: background .2s; text-decoration: none !important; }
+    .btn-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent-hover); }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { background: var(--surface); }
+
+    /* PAGE HEADER */
+    .page-header { padding: 3rem 1.5rem 2rem; text-align: center; border-bottom: 1px solid var(--border); }
+    .page-header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .page-header p { color: var(--muted); max-width: 480px; margin: 0 auto; }
+
+    /* LAYOUT */
+    .layout { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem; display: grid; grid-template-columns: 1fr; gap: 2rem; }
+    @media (min-width: 720px) { .layout { grid-template-columns: 220px 1fr; } }
+
+    /* SIDEBAR */
+    .sidebar { display: flex; flex-direction: column; gap: 0.4rem; }
+    .sidebar a { display: block; padding: 0.5rem 0.8rem; border-radius: 6px; color: var(--muted); font-size: 0.875rem; transition: background .15s, color .15s; }
+    .sidebar a:hover, .sidebar a.active { background: var(--surface); color: var(--text); text-decoration: none; }
+    .sidebar-heading { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 0.4rem 0.8rem 0.2rem; margin-top: 0.6rem; }
+
+    /* CONTACT CARDS */
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .contact-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.3rem; transition: border-color .2s; }
+    .contact-card:hover { border-color: var(--blue); }
+    .contact-card .icon { font-size: 1.6rem; margin-bottom: 0.6rem; }
+    .contact-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .contact-card p { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.8rem; }
+
+    /* FAQ */
+    .faq-section h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 1.2rem; }
+    .faq { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 2rem; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-question { width: 100%; background: none; border: none; color: var(--text); text-align: left; padding: 1rem 1.2rem; font-size: 0.9rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; transition: background .15s; }
+    .faq-question:hover { background: var(--surface); }
+    .faq-question svg { flex-shrink: 0; transition: transform .2s; }
+    .faq-question[aria-expanded="true"] svg { transform: rotate(180deg); }
+    .faq-answer { display: none; padding: 0 1.2rem 1rem; font-size: 0.875rem; color: var(--muted); }
+    .faq-answer.open { display: block; }
+    .faq-answer code { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.1rem 0.4rem; font-size: 0.82rem; color: #79c0ff; }
+    .faq-answer ul { padding-left: 1.2rem; margin-top: 0.4rem; }
+    .faq-answer li { margin-bottom: 0.3rem; }
+
+    /* STATUS */
+    .status-banner {
+      background: rgba(35,134,54,.1);
+      border: 1px solid rgba(35,134,54,.3);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.875rem;
+      margin-bottom: 2rem;
+    }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; background: #3fb950; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(63,185,80,.2); }
+    .status-banner strong { color: var(--text); }
+    .status-banner span { color: var(--muted); }
+
+    /* REPORT BUG */
+    .report-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
+    .report-section h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .report-section p { font-size: 0.875rem; color: var(--muted); margin-bottom: 1rem; }
+    .report-steps { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .report-steps li { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 0.875rem; color: var(--muted); }
+    .step-badge { background: var(--blue); color: #fff; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; margin-top: 0.1rem; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; font-size: 0.82rem; color: var(--muted); }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--text); text-decoration: none; }
+    .footer-links { display: flex; gap: 1.2rem; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#3fb950" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+    SecuriScan
+  </a>
+  <div class="nav-links">
+    <a href="index.html#features">Features</a>
+    <a href="index.html#how-it-works">How it works</a>
+    <a href="support.html" style="color:var(--text)">Support</a>
+    <a class="btn btn-primary" href="https://chrome.google.com/webstore" target="_blank">Add to Chrome</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <h1>Support Center</h1>
+  <p>Find answers, report bugs, or get in touch. We're happy to help.</p>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-heading">Support</div>
+    <a href="#get-help" class="active">Get Help</a>
+    <a href="#faq">FAQ</a>
+    <a href="#report-bug">Report a Bug</a>
+    <div class="sidebar-heading">Resources</div>
+    <a href="index.html">← Back to Home</a>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main>
+
+    <!-- STATUS -->
+    <div class="status-banner">
+      <div class="status-dot"></div>
+      <div><strong>All systems operational</strong> <span>· SecuriScan v1.3.0</span></div>
+    </div>
+
+    <!-- CONTACT CARDS -->
+    <div id="get-help">
+      <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:1rem">Get Help</h2>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="icon">🐛</div>
+          <h3>Bug Reports</h3>
+          <p>Found something broken? Leave a review on the Chrome Web Store and we'll get back to you.</p>
+          <a class="btn btn-outline" href="https://chrome.google.com/webstore" target="_blank" style="font-size:.8rem;padding:.4rem .9rem">Open Chrome Web Store</a>
+        </div>
+        <div class="contact-card">
+          <div class="icon">💡</div>
+          <h3>Feature Requests</h3>
+          <p>Have an idea to make SecuriScan better? We'd love to hear it — reach out via email.</p>
+          <a class="btn btn-outline" href="mailto:asharda84@gmail.com" style="font-size:.8rem;padding:.4rem .9rem">Send an Email</a>
+        </div>
+        <div class="contact-card">
+          <div class="icon">❓</div>
+          <h3>General Questions</h3>
+          <p>Usage tips, how-it-works questions, or anything else — drop us a message.</p>
+          <a class="btn btn-outline" href="mailto:asharda84@gmail.com" style="font-size:.8rem;padding:.4rem .9rem">Contact Us</a>
+        </div>
+        <div class="contact-card">
+          <div class="icon">⭐</div>
+          <h3>Leave a Review</h3>
+          <p>Enjoying SecuriScan? A review on the Chrome Web Store helps others discover it.</p>
+          <a class="btn btn-outline" href="https://chrome.google.com/webstore" target="_blank" style="font-size:.8rem;padding:.4rem .9rem">Rate on Web Store</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section" id="faq">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq">
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" onclick="toggle(this)">
+            Is SecuriScan safe to use? Does it send my data anywhere?
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            <strong>Yes, 100% safe.</strong> SecuriScan runs entirely inside your browser — no data is sent to any external server. All analysis is local, we have no backend, and we collect zero telemetry. The full source code is open on GitHub so you can verify this yourself.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" onclick="toggle(this)">
+            Which browsers are supported?
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            SecuriScan uses <strong>Manifest V3</strong> and works on:
+            <ul>
+              <li>Google Chrome (v88+)</li>
+              <li>Microsoft Edge (Chromium-based)</li>
+              <li>Brave Browser</li>
+              <li>Any other Chromium-based browser</li>
+            </ul>
+            Firefox support is not available yet, but is on the roadmap.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" onclick="toggle(this)">
+            The extension icon appears greyed out. What's wrong?
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            A greyed-out icon typically means the extension cannot access the current page. This happens on:
+            <ul>
+              <li>Chrome internal pages (<code>chrome://</code>)</li>
+              <li>New tab / blank pages</li>
+              <li>Chrome Web Store pages (browser restriction)</li>
+              <li>PDF files opened in the browser</li>
+            </ul>
+            Navigate to a regular <code>https://</code> website and it will activate normally.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" onclick="toggle(this)">
+            What does the security score actually mean?
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            The score (0–100) is a weighted average across 8 security categories. A lower score doesn't mean a site is actively malicious — it means security best practices aren't fully implemented. Think of it as a <strong>posture indicator</strong>, not a definitive verdict. Always review individual findings for context.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" onclick="toggle(this)">
+            I'm a developer. Why is my own site scoring low?
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            Common reasons:
+            <ul>
+              <li><strong>Missing security headers</strong> — Add <code>Content-Security-Policy</code>, <code>Strict-Transport-Security</code>, etc. via your server or CDN.</li>
+              <li><strong>Outdated libraries</strong> — Update jQuery, Lodash, etc. to current versions.</li>
+              <li><strong>Cookies without flags</strong> — Set <code>HttpOnly</code> and <code>Secure</code> on session cookies.</li>
+              <li><strong>Mixed content</strong> — Ensure all resources (fonts, scripts, images) load over HTTPS.</li>
+            </ul>
+            The extension report includes specific recommendations for each finding.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" onclick="toggle(this)">
+            Can I use SecuriScan for penetration testing?
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            SecuriScan is a <strong>passive analyzer only</strong> — it never makes intrusive requests, modifies traffic, or attacks anything. It's great for a quick security health check but is not a replacement for tools like Burp Suite or OWASP ZAP for active penetration testing. Always obtain proper authorization before testing any system you don't own.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" onclick="toggle(this)">
+            How do I export a report?
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            After scanning a page, scroll to the bottom of the SecuriScan popup and click <strong>"Export HTML Report."</strong> A styled HTML file will be downloaded containing all findings, scores, and recommendations — ready to share with your team or clients.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false" onclick="toggle(this)">
+            Where can I get the latest version of SecuriScan?
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            The latest version is always available on the <a href="https://chrome.google.com/webstore" target="_blank">Chrome Web Store</a>. Updates are delivered automatically by Chrome — you don't need to do anything manually.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- REPORT A BUG -->
+    <div class="report-section" id="report-bug">
+      <h2>Report a Bug</h2>
+      <p>To help us fix issues quickly, please include the following information in your GitHub issue:</p>
+      <ul class="report-steps">
+        <li><div class="step-badge">1</div><span><strong>Chrome version</strong> — found at <code>chrome://version/</code></span></li>
+        <li><div class="step-badge">2</div><span><strong>SecuriScan version</strong> — shown at the top of the extension popup</span></li>
+        <li><div class="step-badge">3</div><span><strong>URL of the page</strong> where the issue occurred (if not sensitive)</span></li>
+        <li><div class="step-badge">4</div><span><strong>Steps to reproduce</strong> — what you did, what you expected, what happened instead</span></li>
+        <li><div class="step-badge">5</div><span><strong>Console errors</strong> (optional) — open DevTools → Console → copy any red errors</span></li>
+      </ul>
+      <div style="margin-top:1.2rem">
+        <a class="btn btn-primary" href="mailto:asharda84@gmail.com">Email Us a Bug Report</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 SecuriScan · MIT License</span>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="support.html">Support</a>
+    <a href="mailto:asharda84@gmail.com">Contact</a>
+  </div>
+</footer>
+
+<script>
+  function toggle(btn) {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', !expanded);
+    btn.nextElementSibling.classList.toggle('open', !expanded);
+  }
+</script>
+
+</body>
+</html>
